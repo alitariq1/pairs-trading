@@ -1,0 +1,12 @@
+README.txt
+pyproject.toml
+src/pairs_trading.egg-info/PKG-INFO
+src/pairs_trading.egg-info/SOURCES.txt
+src/pairs_trading.egg-info/dependency_links.txt
+src/pairs_trading.egg-info/top_level.txt
+tests/test_backtest.py
+tests/test_data.py
+tests/test_pairs.py
+tests/test_smoke.py
+tests/test_strategy.py
+tests/test_viz.py

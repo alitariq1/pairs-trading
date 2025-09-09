@@ -1,0 +1,15 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Synthetic Demo",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/run_synthetic_demo.py",
+      "console": "integratedTerminal",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}/src"
+      }
+    }
+  ]
+}
