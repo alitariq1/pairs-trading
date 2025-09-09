@@ -1,23 +1,30 @@
-# Python cache
+#Python basics
 __pycache__/
 *.py[cod]
-*.egg-info/
-*.egg
+*.pyo
+*.orig
+*.log
 
-# Virtual environments
+#Virtual envs & local config
 .venv/
-env/
-venv/
-
-# OS junk
-.DS_Store
-Thumbs.db
-
-# IDE/editor
+.env
+.env.*
 .vscode/
 .idea/
 
-# Project data/outputs
+#OS files
+.DS_Store
+Thumbs.db
+
+#Data & generated outputs
 data/raw/
 outputs/
 results/
+
+#Allowlist for curated README/demo figures
+!results/readme-*.png
+!results/readme-*.jpg
+!results/readme-*.gif
+
+#Documentation assets (always keep)
+docs/img/
