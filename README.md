@@ -6,7 +6,7 @@
 A compact, end-to-end workflow for statistical pairs trading.  
 Includes data acquisition, pair selection, signal generation, vectorized backtesting, performance analytics, and publication-ready figures.
 
-![Equity vs Drawdown](results/figures/example_equity_drawdown.png)
+![Equity vs Drawdown](results/figures/equity_drawdown.png)
 
 ---
 
