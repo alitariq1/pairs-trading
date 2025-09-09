@@ -85,23 +85,31 @@ Running `main.py` produces:
 
 ```
 pairs-trading/
-  main.py             # entry point script
-  data.py             # download, align, validate, save
-  pairs.py            # correlation, cointegration, half-life, ranking
-  strategy.py         # hedge ratio, spread, z-score, signal engine
-  backtest.py         # vectorized backtest + metrics
-  viz.py              # plots and visualizations
-  requirements.txt    # Python dependencies
-  pyproject.toml      # package metadata
   README.md
-  results/
-    figures/          # saved plots
+  LICENSE
+  pyproject.toml
+  requirements.txt
+  main.py                  # entry-point script
+  src/                     # source code
+    data.py                # download, align, validate, save
+    pairs.py               # correlation, cointegration, half-life, ranking
+    strategy.py            # hedge ratio, spread, z-score, signal engine
+    backtest.py            # vectorized backtest + metrics
+    viz.py                 # plots and visualizations
+    __init__.py            # (optional) package marker
   data/
-    raw/              # raw price data
-    processed/        # cleaned wide matrix
+    raw/                   # raw price data (usually gitignored)
+    processed/             # cleaned wide matrix (usually gitignored)
+  results/
+    figures/               # saved plots (usually gitignored)
   outputs/
-    csv/              # CSV outputs
-  tests/              # (optional) pytest unit tests
+    csv/                   # exported csvs (usually gitignored)
+  notebooks/               # exploratory analysis
+  tests/                   # pytest unit tests
+  .vscode/                 # local editor config (gitignore recommended)
+  .venv/                   # local virtualenv (gitignore recommended)
+  __pycache__/             # python cache (gitignore recommended)
+
 ```
 
 ---
