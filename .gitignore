@@ -1,4 +1,4 @@
-#Python basics
+# ---- Python basics
 __pycache__/
 *.py[cod]
 *.pyo
@@ -19,12 +19,6 @@ Thumbs.db
 #Data & generated outputs
 data/raw/
 outputs/
-results/
-
-#Allowlist for curated README/demo figures
-!results/readme-*.png
-!results/readme-*.jpg
-!results/readme-*.gif
 
 #Documentation assets (always keep)
 docs/img/

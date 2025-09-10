@@ -3,31 +3,29 @@
 ![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 
-A compact, end-to-end workflow for statistical pairs trading.  
-Includes data acquisition, pair selection, signal generation, vectorized backtesting, performance analytics, and publication-ready figures.
-
-![Equity vs Drawdown](results/figures/equity_drawdown.png)
+An end-to-end Python framework for exploring statistical arbitrage with pairs trading.  
+The project demonstrates skills in **data collection, cleaning, time series analysis, backtesting, and visualization**.
 
 ---
 
 ## Features
-- **Data pipeline**
-  - Yahoo Finance via `yfinance` (Adjusted Close, Volume)
-  - Cleans and aligns prices to a wide matrix
+- **Data handling**
+  - Pulls daily stock prices with `yfinance`
+  - Cleans and aligns data into a single table for analysis
 - **Pair selection**
-  - OLS hedge ratio + Engle–Granger cointegration
-  - ADF test on residuals
-  - Half-life estimation (AR(1) on the spread)
-  - Optional same-sector filter and return-correlation prefilter
+  - Finds stock pairs that move together
+  - Basic filters to avoid random or unrelated matches
 - **Strategy**
-  - Spread construction, rolling z-score
-  - Band logic with configurable entry/exit, optional z-stop and time stop
+  - Builds a spread between two stocks
+  - Calculates a rolling z-score to detect when the spread is “too wide” or “too tight”
+  - Entry/exit rules based on simple thresholds
 - **Backtesting**
-  - Vectorized, next-close execution with linear fees + slippage
-  - Equity curve, drawdowns, exposures, turnover, summary metrics
+  - Simulates trades on historical data
+  - Tracks profit/loss, portfolio value, and drawdowns
+  - Reports core metrics: growth, volatility, Sharpe ratio, hit rate
 - **Visualization**
-  - Spread with signals and z-score overlay
-  - Equity + drawdown with concise date formatting
+  - Plot of the spread with entry/exit signals
+  - Equity curve with drawdown shading
 
 ---
 
@@ -59,7 +57,7 @@ pip install -r requirements.txt
 Run the main workflow:
 
 ```bash
-python main.py
+python3 main.py
 ```
 
 ---
@@ -68,16 +66,19 @@ python main.py
 
 Running `main.py` produces:
 
-- Console summary with top-ranked pairs and metrics (CAGR, Sharpe, Sortino, max drawdown, annual turnover).
-- Figures saved to `results/figures/`:
-  - `XLP_XLY_spread_signals.png`
-  - `XLP_XLY_equity_drawdown.png`
+- **Console summary**:
+  - Selected stock pair and hedge ratio
+  - Table of top candidate pairs
+  - Starting capital vs. ending equity
+  - Performance metrics (growth rate, Sharpe ratio, max drawdown, hit rate)
+- **Figures** saved to `results/figures/`:
+  - Spread with entry/exit markers
+  - Equity curve with drawdowns
 
 ### Sample Figures
 
-![Spread & Signals](results/figures/spread_signals.png)
-![Return History](results/figures/return_hist.png)
-
+![Spread & Signals](results/figures/spread_signals.png)  
+![Equity vs Drawdown](results/figures/equity_drawdown.png)
 
 ---
 
@@ -87,39 +88,30 @@ Running `main.py` produces:
 pairs-trading/
   README.md
   LICENSE
-  pyproject.toml
   requirements.txt
   main.py                  # entry-point script
   src/                     # source code
-    data.py                # download, align, validate, save
-    pairs.py               # correlation, cointegration, half-life, ranking
-    strategy.py            # hedge ratio, spread, z-score, signal engine
-    backtest.py            # vectorized backtest + metrics
-    viz.py                 # plots and visualizations
-    __init__.py            # (optional) package marker
+    data.py                # download, clean, validate prices
+    pairs.py               # find and rank candidate pairs
+    strategy.py            # spread, z-score, signal generation
+    backtest.py            # backtesting + metrics
+    viz.py                 # plotting utilities
   data/
-    raw/                   # raw price data (usually gitignored)
-    processed/             # cleaned wide matrix (usually gitignored)
+    raw/                   # raw price data (ignored)
+    processed/             # cleaned data (ignored)
   results/
-    figures/               # saved plots (usually gitignored)
-  outputs/
-    csv/                   # exported csvs (usually gitignored)
-  notebooks/               # exploratory analysis
+    figures/               # output plots
   tests/                   # pytest unit tests
-  .vscode/                 # local editor config (gitignore recommended)
-  .venv/                   # local virtualenv (gitignore recommended)
-  __pycache__/             # python cache (gitignore recommended)
-
 ```
 
 ---
 
 ## Configuration
 
-Key parameters can be adjusted in `main.py`:
+Key parameters in `main.py`:
 
 ```python
-TICKERS = ("XLP", "XLY", "XLV", "XLI")
+TICKERS = ("KO", "PEP")
 START_DATE = "2018-01-01"
 END_DATE   = "2025-01-01"
 
@@ -143,15 +135,12 @@ DOLLAR_PER_LEG = 50_000.0
 ---
 
 ## Notes & Disclaimer
-This repository is for **educational and research purposes only**.  
-It is not investment advice and does not constitute a recommendation to buy or sell any security.
+This project is for **educational purposes only** and should not be used as financial advice.
 
 ---
 
 ## License
 [MIT](LICENSE)
-
----
 
 ## Acknowledgments
 - [yfinance](https://github.com/ranaroussi/yfinance) for market data

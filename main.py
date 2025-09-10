@@ -113,29 +113,52 @@ def main() -> None:
         rf=0.0,
         daily_turnover=portfolio.get("daily_turnover"),
     )
-
-    # Console report
+    # ===== Console report =====
     print("===== Pairs Trading Summary =====")
-    print(f"Selected pair: {x} vs {y}  |  beta = {beta:.3f}")
-    print("\nTop-ranked pairs:")
-    print(ranked.to_string(index=False))
+    print(f"Selected pair: {x} vs {y}  |  beta ≈ {beta:.3f}")
+    print("Idea: If two related stocks drift apart, we bet the gap (z-score) will shrink.")
+    print(f"Rules: enter when |z| > {Z_ENTRY}, exit when |z| < {Z_EXIT}.", end="")
+    if Z_STOP is not None:
+        print(f" Safety: exit if |z| > {Z_STOP}.", end="")
+    if TIME_STOP_BARS is not None:
+        print(f" Timeout: exit after {TIME_STOP_BARS} days.", end="")
+    print()
 
+    # Show a simple table of the top-ranked pairs
+    cols_to_show = [c for c in ["x", "y", "beta", "score"] if c in ranked.columns]
+    if cols_to_show:
+        print("\nTop-ranked pairs:")
+        print(ranked.loc[:, cols_to_show].to_string(index=False))
+
+    # Performance metrics
     print("\nPerformance metrics:")
-    for k in (
-        "cagr",
-        "ann_vol",
-        "sharpe",
-        "sortino",
-        "max_drawdown",
-        "hit_rate",
-        "payoff_ratio",
-        "annual_turnover",
-    ):
-        v = metrics.get(k, None)
-        if v is not None:
-            print(f"{k:16s}: {v:.6f}")
+    def _maybe(name: str, key: str, as_pct: bool = False, nd: int = 2):
+        if key in metrics and metrics[key] is not None:
+            val = metrics[key]
+            if as_pct:
+                print(f"- {name}: {val:.2%}")
+            else:
+                fmt = f"{{:.{nd}f}}"
+                print(f"- {name}: {fmt.format(val)}")
 
-    # Figures (optional)
+    _maybe("CAGR (avg yearly growth)", "cagr", as_pct=True)
+    _maybe("Sharpe (risk-adjusted return)", "sharpe", nd=2)
+    _maybe("Max Drawdown (worst drop)", "max_drawdown", as_pct=True)
+    _maybe("Hit Rate (% winning trades)", "hit_rate", as_pct=True)
+    _maybe("Annual volatility", "ann_vol", as_pct=True)
+    _maybe("Turnover (trades per year)", "annual_turnover", nd=2)
+
+    # Equity summary
+    equity_series = portfolio["equity"]
+    start_equity = equity_series.iloc[0]
+    end_equity = equity_series.iloc[-1]
+    net_profit = end_equity - start_equity
+    print(f"\nEquity summary:")
+    print(f"- Starting capital: {start_equity:,.2f}")
+    print(f"- Final equity:     {end_equity:,.2f}")
+    print(f"- Net profit:       {net_profit:,.2f}")
+
+    # Figures
     try:
         plot_spread_with_signals(
             spread=spread,
@@ -148,7 +171,7 @@ def main() -> None:
         )
         print("\nSaved figures to results/figures/")
     except Exception:
-        # Visualization should not block a headless or minimal environment.
+        # Skip plotting if running in a non-graphical environment
         pass
 
 if __name__ == "__main__":
